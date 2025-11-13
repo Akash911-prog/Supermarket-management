@@ -1,11 +1,45 @@
 # ------------------------------------------
 # Configuration
 # ------------------------------------------
+from InquirerPy.base.control import Choice
+from InquirerPy.utils import get_style
+import shutil
+
 
 DB_NAME = "supermarket_db"
 DB_PASSWORD = "Mysql0914"
+INDENT_RATIO = 0.4
 
 TABLES = {}
+
+def center_menu_block(choices, indent_ratio=0.25):
+    """Add equal left margin to all choices to center menu block visually."""
+    width = shutil.get_terminal_size().columns
+    indent = int(width * indent_ratio)
+    prefix = " " * indent
+    return [Choice(value=c[0], name=prefix + c[1]) for c in choices]
+
+base_choices = [
+    ("add_item", "➕  Add Item"),
+    ("view_inventory", "📦  View Inventory"),
+    ("view_sales", "📊  View Sales Report"),
+    ("generate_bill", "🧾  Generate Bill"),
+    ("exit", "🚪  Exit"),
+]
+
+MAIN_MENU_CHOICES = center_menu_block(base_choices, indent_ratio=INDENT_RATIO)
+
+MENU_STYLES = get_style({
+    "questionmark": "#00C896 bold",
+    "answer": "#90EE90 bold",
+    "pointer": "#00C896 bold",
+    "highlighted": "#00FFBF bold",
+    "selected": "#00C896",
+    "separator": "#808080",
+    "instruction": "#C0C0C0 italic",
+    "text": "#DCDCDC",
+})
+
 
 TABLES['items'] = (
     """
@@ -51,3 +85,4 @@ TABLES['daily_sales'] = (
     );
     """
 )
+

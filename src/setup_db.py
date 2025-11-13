@@ -11,9 +11,9 @@ from config import DB_NAME, TABLES, DB_PASSWORD
 def create_connection():
     try:
         conn = mysql.connector.connect(
-            host="localhost",      # Change if needed
-            user="root",           # Your MySQL username
-            password=DB_PASSWORD  # <-- CHANGE THIS
+            host="localhost",      # server host
+            user="root",           # My MySQL username
+            password=DB_PASSWORD    # database password
         )
         cursor = conn.cursor()
         print("✅ Connected to MySQL server.")
