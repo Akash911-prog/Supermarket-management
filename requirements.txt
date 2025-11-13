@@ -1,0 +1,5 @@
+mysql-connector-python
+CustomTkinter
+pandas
+python-dotenv
+matplotlib
