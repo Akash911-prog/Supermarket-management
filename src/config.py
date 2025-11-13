@@ -3,6 +3,7 @@
 # ------------------------------------------
 
 DB_NAME = "supermarket_db"
+DB_PASSWORD = "Mysql0914"
 
 TABLES = {}
 
