@@ -1,40 +1,60 @@
 from InquirerPy import inquirer
 from rich.console import Console
 from rich.traceback import install
-from rich.align import Align
-from rich.panel import Panel
-from pyfiglet import Figlet
-import os
 from time import sleep
-from libs.helper import center_text
+from libs.helper import center_text, clear_screen
+from libs.map_choices import map_choices
 from config import MENU_STYLES, MAIN_MENU_CHOICES
 
-install()
-console = Console()
-
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+install() # formats the error messages if any
+console = Console() # the console object used in rich to format text
 
 def show_centered_title(title):
-    f = Figlet(font="slant", width=320)
-    text = f.renderText(title)
-    console.print(Align.center(Panel(f"[bold cyan]{text}[/bold cyan]")))
+    console.print(title, style="bold cyan on black", justify="center")
+    console.print("-" * len(title), style="bold cyan on black", justify="center")
 
 def create_main_menu():
+    """
+    Create the main menu using InquirerPy's select module.
+
+    Returns:
+        str: The selected menu option
+    """
     answer = inquirer.select(
+        # Center the main menu text
         message=center_text("Main Menu"),
+        # Use the predefined main menu choices
         choices=MAIN_MENU_CHOICES,
+        # Use the predefined menu styles
         style=MENU_STYLES,
     ).execute()
     return answer
 
 def main():
-    clear_screen()
-    show_centered_title("Supermarket Management System ")
-    choice = create_main_menu()
-    clear_screen()
-    print(f"You selected: {choice}")
-    sleep(1)
+    """
+    The main function that runs the program.
+
+    This function creates a loop that displays the main menu, gets the user's choice,
+    and maps the choice to the corresponding function.
+
+    Returns:
+        None
+    """
+    while True:
+        # Clear the screen
+        clear_screen()
+        # Show the title
+        show_centered_title("Supermarket Management System ")
+        # Create the main menu
+        choice = create_main_menu()
+        # Clear the screen
+        clear_screen()
+        # Map the choice to the corresponding function
+        map_choices(choice)
+        # Print the selected choice
+        console.print(f"You selected: {choice}", style="bold green on black")
+        # Wait for a second before looping again
+        sleep(1)
 
 if __name__ == "__main__":
     main()

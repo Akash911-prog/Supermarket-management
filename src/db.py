@@ -13,7 +13,36 @@ class DB: # A DB class for easier db connection management
         self.cursor = self.conn.cursor() # get the cursor
 
     def close(self):
+        """
+        Close the database connection and cursor.
+
+        This method is used to ensure the database connection and
+        cursor are properly closed when the DB object is no longer
+        needed.
+
+        Returns:
+            None
+        """
+        # Close the cursor
         self.cursor.close()
+
+        # Close the connection
         self.conn.close()
+
+    def add_item(self, name: str, description: str, price: float, stock: int):
+        """
+        Add an item to the database.
+
+        Args:
+            name (str): The name of the item.
+            description (str): A description of the item.
+            price (float): The price of the item.
+            stock (int): The initial stock of the item.
+
+        Returns:
+            None
+        """
+        self.cursor.execute("INSERT INTO items (name, description, price, stock) VALUES (%s, %s, %s, %s)", (name, description, price, stock))
+        self.conn.commit()
 
 
