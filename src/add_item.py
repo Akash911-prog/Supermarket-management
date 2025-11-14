@@ -27,18 +27,22 @@ def add_item_menu():
 
     show_menu_heading("Add Items")
 
-    name = inquirer.text(message="Enter the name of the item: ", validate=EmptyInputValidator()).execute()
-    description = inquirer.text(message="Enter a description for the item: ", validate=EmptyInputValidator()).execute()
-    price = inquirer.number(message="Enter the price of the item: ", float_allowed=True, validate=EmptyInputValidator()).execute()
-    stock = inquirer.number(message="Enter the initial stock of the item: ", float_allowed=False, validate=EmptyInputValidator()).execute()
-
-    if ( 
-        float(price) <= 0
-        or int(stock) <= 0
-        ):
-        console.print("❌ Invalid input. Please try again.", style="bold red on black")
-        sleep(1)
-        return
+    name = inquirer.text(
+        message="Enter the name of the item: ", 
+        validate=EmptyInputValidator()).execute()
+    description = inquirer.text(
+        message="Enter a description for the item: ", 
+        validate=EmptyInputValidator()).execute()
+    price = inquirer.number(
+        message="Enter the price of the item: ", 
+        float_allowed=True, validate=lambda x: float(x) > 0, 
+        transformer=lambda x: float(x), 
+        invalid_message="price needs to be greater than 0").execute()
+    stock = inquirer.number(
+        message="Enter the initial stock of the item: ", 
+        float_allowed=False, validate=lambda x: int(x) > 0, 
+        transformer=lambda x: int(x), 
+        invalid_message="stock needs to be greater than 0").execute()
     
     items_to_add.append((name, description, price, stock))
     
@@ -73,7 +77,8 @@ def add_item_main():
         if not confirm:
             if len(items_to_add) > 0:
                 print_to_add_items()
-                # add_item_to_db(items_to_add)
+                add_item_to_db(items_to_add)
+                input("Press enter to continue...")
             break
 
 

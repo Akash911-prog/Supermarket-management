@@ -5,8 +5,10 @@ from rich.console import Console
 from time import sleep
 from InquirerPy import inquirer
 from config import MENU_STYLES, MANAGE_INV_CHOICES
-from libs.helper import clear_screen, show_menu_heading
+from libs.helper import clear_screen, show_menu_heading, create_item_table
 from libs.fuzzy_search import fuzzy_search
+from remove_item import remove_item_main
+from update_item import update_item_main
 
 
 def view_inventory():
@@ -16,12 +18,7 @@ def view_inventory():
         items = db.get_items()
         sleep(1)
         
-    table = Table(title="Inventory", title_style="bold cyan", border_style="#3C6382", style="#EAF0F1")
-    table.add_column("Item ID", justify="right", style="bold blue")
-    table.add_column("Item Name", justify="left", style="bold green")
-    table.add_column("Description", justify="left", style="bold")
-    table.add_column("Price", justify="right", style="bold cyan")
-    table.add_column("Stock", justify="right", style="bold red")
+    table = create_item_table()
 
     for item in items:
         table.add_row(str(item[0]), item[1], item[2], str(item[3]), str(item[4]))
@@ -49,12 +46,24 @@ def manage_inventory_menu():
 def manage_inventory():
     while True:
         choice = manage_inventory_menu()
+        console = Console()
 
         if choice == "add_item":
             add_item_main()
         elif choice == "remove_item" or choice == "update_item":
-            item_id = fuzzy_search()[0] # returns a tuple
-            print(item_id)
+            item = fuzzy_search() # returns a tuple
+            item_id = item[0] # returns the item id
+            if choice == "remove_item":
+                confirm = inquirer.confirm(message=f"Are you sure you want to remove {item[1]}?").execute()
+                if not confirm:
+                    continue
+                remove_item_main(item_id)
+                console.print(f"Item with Item Id: {item_id} has been removed successfully!", style="bold green on black")
+                sleep(0.5)
+            elif choice == "update_item":
+                updated_fields = update_item_main(item_id)
+                console.print(f"Item with Item Id: {item_id} has been updated successfully!", style="bold green on black")
+                sleep(0.5)
             input("Press enter to continue...")
         elif choice == "exit":
             break

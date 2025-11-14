@@ -49,4 +49,11 @@ class DB: # A DB class for easier db connection management
         self.cursor.execute("SELECT * FROM items")
         return self.cursor.fetchall()
 
+    def remove_item(self, item_id: int):
+        self.cursor.execute("DELETE FROM items WHERE item_id = %s", (item_id,))
+        self.conn.commit()
+
+    def update_item(self, item_id: int, field: str, value: str):
+        self.cursor.execute(f"UPDATE items SET {field} = %s WHERE item_id = %s", (value, item_id))
+        self.conn.commit()
 

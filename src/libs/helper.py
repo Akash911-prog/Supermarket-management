@@ -3,6 +3,7 @@ from InquirerPy.base.control import Choice
 from rich.panel import Panel
 from rich.console import Console
 from rich.align import Align
+from rich.table import Table
 import os
 from time import sleep
 
@@ -42,3 +43,12 @@ def show_menu_heading(text):
         style="bold cyan on black",)
     
     console.print(Panel(text, width=60, style="bold cyan on black"))
+
+def create_item_table():
+    table = Table(title="Inventory", title_style="bold cyan", border_style="#3C6382", style="#EAF0F1")
+    table.add_column("Item ID", justify="right", style="bold blue")
+    table.add_column("Item Name", justify="left", style="bold green")
+    table.add_column("Description", justify="left", style="bold")
+    table.add_column("Price", justify="right", style="bold cyan")
+    table.add_column("Stock", justify="right", style="bold red")
+    return table
