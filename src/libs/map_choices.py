@@ -15,3 +15,5 @@ def map_choices(choice):
     }
 
     options[choice]()
+
+

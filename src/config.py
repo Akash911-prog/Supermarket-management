@@ -27,9 +27,28 @@ base_manage_inv_choices = [
     ("exit", "🚪  Exit to Main Menu"),
 ]
 
+base_bill_choices = [
+    ("add", "➕  Add Item"),
+    ("edit", "📝  Edit Bill"),
+    ("current", "📃  Show Current Bill"),
+    ("finalize", "✅  Finalize Bill"),
+    ("cancel", "❌  Cancel"),
+]
+
+base_bill_edit_choices = [
+    ("add", "➕  Add Item"),
+    ("edit", "📝  Edit Bill"),
+    ("remove", "❌  Remove Item"),
+    ("current", "📃  Show Current Bill"),
+    ("finalize", "✅  Finalize Bill"),
+    ("cancel", "❌  Cancel"),
+]
+
 MAIN_MENU_CHOICES = center_menu_block(base_choices, indent_ratio=INDENT_RATIO)
 
 MANAGE_INV_CHOICES = center_menu_block(base_manage_inv_choices, indent_ratio=0)
+
+BILL_CHOICES = center_menu_block(base_bill_choices, indent_ratio=0)
 
 MENU_STYLES = get_style({
     "questionmark": "#00C896 bold",
@@ -41,6 +60,14 @@ MENU_STYLES = get_style({
     "instruction": "#C0C0C0 italic",
     "text": "#DCDCDC",
 })
+
+ITEM_FIELD_INDEX = {
+    "item_id": 0,
+    "name": 1,
+    "description": 2,
+    "price": 3,
+    "stock": 4
+}
 
 
 TABLES['items'] = (
@@ -72,6 +99,8 @@ TABLES['order_items'] = (
         order_id INT,
         item_id INT,
         quantity INT NOT NULL,
+        price Decimal(10,2) NOT NULL,
+        total_price Decimal(10,2) AS (price * quantity) STORED,
         FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
         FOREIGN KEY (item_id) REFERENCES items(item_id)
     );

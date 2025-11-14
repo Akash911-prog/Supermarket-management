@@ -85,9 +85,9 @@ def insert_dummy_orders(conn, cursor) -> None:
 
         # Example order items (order_id, item_id, quantity)
         order_items = [
-            (order_ids[0], 1, 2),  # 2 apples
-            (order_ids[0], 2, 1),  # 1 milk
-            (order_ids[1], 3, 3),  # 3 bread
+            (order_ids[0], 1, 2, 30),  # 2 apples
+            (order_ids[0], 2, 1, 20),  # 1 milk
+            (order_ids[1], 3, 3, 90),  # 3 bread
         ]
         cursor.executemany("""
             INSERT INTO order_items (order_id, item_id, quantity)

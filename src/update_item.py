@@ -3,6 +3,7 @@ from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
 from rich.console import Console
 from config import MENU_STYLES
+from libs.helper import clear_screen, show_menu_heading
 
 
 def get_updation_fields():
@@ -62,6 +63,8 @@ def get_updation_fields():
 def update_item_main(item_id: int):
     db = DB()
     console = Console()
+    clear_screen()
+    show_menu_heading("Update Item")
 
     fields_to_update = get_updation_fields()
 
