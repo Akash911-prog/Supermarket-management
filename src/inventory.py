@@ -5,7 +5,7 @@ from rich.console import Console
 from time import sleep
 from InquirerPy import inquirer
 from config import MENU_STYLES, MANAGE_INV_CHOICES
-from libs.helper import center_text, clear_screen, show_menu_heading
+from libs.helper import clear_screen, show_menu_heading
 from libs.fuzzy_search import fuzzy_search
 
 
@@ -38,7 +38,7 @@ def manage_inventory_menu():
 
     answer = inquirer.select(
         # Center the main menu text
-        message=center_text("use arrow keys to navigate and enter to select"),
+        message="use arrow keys to navigate and enter to select",
         # Use the predefined main menu choices
         choices=MANAGE_INV_CHOICES,
         # Use the predefined menu styles
@@ -53,8 +53,9 @@ def manage_inventory():
         if choice == "add_item":
             add_item_main()
         elif choice == "remove_item" or choice == "update_item":
-            item_id = fuzzy_search().id
+            item_id = fuzzy_search()[0] # returns a tuple
             print(item_id)
+            input("Press enter to continue...")
         elif choice == "exit":
             break
 

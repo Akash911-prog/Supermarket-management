@@ -2,7 +2,7 @@ from InquirerPy import inquirer
 from db import DB
 
 
-def fuzzy_search() -> dict:
+def fuzzy_search() -> tuple[int, str, str, float, int]:
     db = DB()
     items_raw = db.get_items()
     items = {item[1]: item for item in items_raw}

@@ -24,12 +24,12 @@ base_manage_inv_choices = [
     ("add_item", "➕  Add Item"),
     ("remove_item", "❌  Remove Item"),
     ("update_item", "📝  Update Item"),
-    ("exit", "🚪  Exit"),
+    ("exit", "🚪  Exit to Main Menu"),
 ]
 
 MAIN_MENU_CHOICES = center_menu_block(base_choices, indent_ratio=INDENT_RATIO)
 
-MANAGE_INV_CHOICES = center_menu_block(base_manage_inv_choices, indent_ratio=INDENT_RATIO)
+MANAGE_INV_CHOICES = center_menu_block(base_manage_inv_choices, indent_ratio=0)
 
 MENU_STYLES = get_style({
     "questionmark": "#00C896 bold",

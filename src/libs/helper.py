@@ -34,6 +34,7 @@ def center_menu_block(choices, indent_ratio=0.25):
     return [Choice(value=c[0], name=prefix + c[1]) for c in choices]
 
 
+
 def show_menu_heading(text):
 
     text = Align.center(
