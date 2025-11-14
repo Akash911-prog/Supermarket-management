@@ -1,34 +1,31 @@
-from pydoc import text
 from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
 from rich.console import Console
 from rich.traceback import install
 from rich.panel import Panel
-from rich.align import Align
 from rich.table import Table
 from time import sleep
-from libs.helper import clear_screen
+from libs.helper import clear_screen, show_menu_heading
 from config import MENU_STYLES
 from db import DB
 
 install() # formats the error messages if any
 console = Console() # the console object used in rich to format text
-db = DB()
 
 items_to_add = []
 
 def add_item_to_db(items_to_add):
+    db = DB()
     for i in items_to_add:
         db.add_item(i[0], i[1], i[2], i[3])
+
+    db.close()
 
 def add_item_menu():
 
     clear_screen()
-    text = Align.center(
-        "Add Item",
-        style="bold cyan on black",)
-    
-    console.print(Panel(text, width=60, style="bold cyan on black"))
+
+    show_menu_heading("Add Items")
 
     name = inquirer.text(message="Enter the name of the item: ", validate=EmptyInputValidator()).execute()
     description = inquirer.text(message="Enter a description for the item: ", validate=EmptyInputValidator()).execute()
@@ -51,12 +48,17 @@ def add_item_menu():
 
 
 def print_to_add_items():
-    table = Panel.fit(
-        "[b][/b]",
-        title="Items to add",
-        title_align="center",
-        style="bold cyan on black",
-    )
+
+    table = Table(show_lines=True, title="Items added", title_style="bold cyan on black", border_style="#3C6382", style="#EAF0F1")
+    table.add_column("Name", justify="left", style="bold ")
+    table.add_column("Description", justify="left", style="bold")
+    table.add_column("Price", justify="left", style="bold")
+    table.add_column("Stock", justify="left", style="bold")
+
+    for item in items_to_add:
+        table.add_row(item[0], item[1], str(item[2]), str(item[3]))
+
+    console.print(table)
 
 
 def add_item_main():
@@ -70,7 +72,8 @@ def add_item_main():
 
         if not confirm:
             if len(items_to_add) > 0:
-                add_item_to_db(items_to_add)
+                print_to_add_items()
+                # add_item_to_db(items_to_add)
             break
 
 

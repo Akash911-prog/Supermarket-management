@@ -14,12 +14,22 @@ TABLES = {}
 base_choices = [
     ("add_item", "➕  Add Item"),
     ("view_inventory", "📦  View Inventory"),
+    ("manage_inventory", "🛒  Manage Inventory"),
     ("view_sales", "📊  View Sales Report"),
     ("generate_bill", "🧾  Generate Bill"),
     ("exit", "🚪  Exit"),
 ]
 
+base_manage_inv_choices = [
+    ("add_item", "➕  Add Item"),
+    ("remove_item", "❌  Remove Item"),
+    ("update_item", "📝  Update Item"),
+    ("exit", "🚪  Exit"),
+]
+
 MAIN_MENU_CHOICES = center_menu_block(base_choices, indent_ratio=INDENT_RATIO)
+
+MANAGE_INV_CHOICES = center_menu_block(base_manage_inv_choices, indent_ratio=INDENT_RATIO)
 
 MENU_STYLES = get_style({
     "questionmark": "#00C896 bold",

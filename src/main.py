@@ -20,9 +20,12 @@ def create_main_menu():
     Returns:
         str: The selected menu option
     """
+
+    show_centered_title("Main Menu")
+
     answer = inquirer.select(
         # Center the main menu text
-        message=center_text("Main Menu"),
+        message=center_text("use arrow keys to navigate and enter to select"),
         # Use the predefined main menu choices
         choices=MAIN_MENU_CHOICES,
         # Use the predefined menu styles
@@ -53,8 +56,8 @@ def main():
         map_choices(choice)
         # Print the selected choice
         console.print(f"You selected: {choice}", style="bold green on black")
-        # Wait for a second before looping again
-        sleep(1)
+
+        sleep(0.1)
 
 if __name__ == "__main__":
     main()

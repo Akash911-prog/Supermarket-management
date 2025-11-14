@@ -45,4 +45,8 @@ class DB: # A DB class for easier db connection management
         self.cursor.execute("INSERT INTO items (name, description, price, stock) VALUES (%s, %s, %s, %s)", (name, description, price, stock))
         self.conn.commit()
 
+    def get_items(self):
+        self.cursor.execute("SELECT * FROM items")
+        return self.cursor.fetchall()
+
 
