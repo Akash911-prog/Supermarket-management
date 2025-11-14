@@ -31,3 +31,12 @@ The system supports handling orders, managing daily sales, and generating report
    ```bash
    git clone https://github.com/Akash911-prog/Supermarket-management.git
    cd Supermarket-management
+
+2. Download dependencies:
+   ```bash
+   pip install -r requirements.txt
+
+3. Run the program.
+   ```bash
+   cd src
+   python main.py
