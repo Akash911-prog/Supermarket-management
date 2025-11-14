@@ -52,6 +52,8 @@ def manage_inventory():
             add_item_main()
         elif choice == "remove_item" or choice == "update_item":
             item = fuzzy_search() # returns a tuple
+            if item == "Cancel":
+                break
             item_id = item[0] # returns the item id
             if choice == "remove_item":
                 confirm = inquirer.confirm(message=f"Are you sure you want to remove {item[1]}?").execute()

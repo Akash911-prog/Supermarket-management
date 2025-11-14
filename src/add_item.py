@@ -28,20 +28,23 @@ def add_item_menu():
     show_menu_heading("Add Items")
 
     name = inquirer.text(
-        message="Enter the name of the item: ", 
-        validate=EmptyInputValidator()).execute()
+        message="Enter the name of the item: ").execute()
+
+    if name == '':
+        return
+
     description = inquirer.text(
         message="Enter a description for the item: ", 
         validate=EmptyInputValidator()).execute()
     price = inquirer.number(
         message="Enter the price of the item: ", 
         float_allowed=True, validate=lambda x: float(x) > 0, 
-        transformer=lambda x: float(x), 
+        filter=lambda x: float(x), 
         invalid_message="price needs to be greater than 0").execute()
     stock = inquirer.number(
         message="Enter the initial stock of the item: ", 
         float_allowed=False, validate=lambda x: int(x) > 0, 
-        transformer=lambda x: int(x), 
+        filter=lambda x: int(x), 
         invalid_message="stock needs to be greater than 0").execute()
     
     items_to_add.append((name, description, price, stock))

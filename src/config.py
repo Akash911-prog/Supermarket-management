@@ -38,7 +38,6 @@ base_bill_choices = [
 base_bill_edit_choices = [
     ("add", "➕  Add Item"),
     ("edit", "📝  Edit Bill"),
-    ("remove", "❌  Remove Item"),
     ("current", "📃  Show Current Bill"),
     ("finalize", "✅  Finalize Bill"),
     ("cancel", "❌  Cancel"),
@@ -103,16 +102,6 @@ TABLES['order_items'] = (
         total_price Decimal(10,2) AS (price * quantity) STORED,
         FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
         FOREIGN KEY (item_id) REFERENCES items(item_id)
-    );
-    """
-)
-
-TABLES['daily_sales'] = (
-    """
-    CREATE TABLE IF NOT EXISTS daily_sales (
-        sale_id INT AUTO_INCREMENT PRIMARY KEY,
-        sale_date DATE UNIQUE,
-        total_sales DECIMAL(10,2)
     );
     """
 )

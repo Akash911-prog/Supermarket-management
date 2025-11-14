@@ -9,6 +9,7 @@ from config import MENU_STYLES, MAIN_MENU_CHOICES
 install() # formats the error messages if any
 console = Console() # the console object used in rich to format text
 
+
 def show_centered_title(title):
     console.print(title, style="bold cyan on black", justify="center")
     console.print("-" * len(title), style="bold cyan on black", justify="center")

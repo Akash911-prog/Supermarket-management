@@ -52,3 +52,15 @@ def create_item_table():
     table.add_column("Price", justify="right", style="bold cyan")
     table.add_column("Stock", justify="right", style="bold red")
     return table
+
+def create_bill_table():
+    # Create a table to display the items in the bill
+    table = Table(show_lines=True, title="Current Bill", title_style="bold cyan on black", border_style="#3C6382", style="#EAF0F1")
+    # Add columns to the table
+    table.add_column("Item ID", justify="right", style="bold blue")
+    table.add_column("Item Name", justify="left", style="bold green")
+    table.add_column("Price", justify="left", style="bold cyan")
+    table.add_column("Quantity", justify="left", style="bold red")
+    table.add_column("Total", justify="left", style="bold green")
+
+    return table

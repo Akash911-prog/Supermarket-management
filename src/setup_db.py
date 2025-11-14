@@ -43,6 +43,7 @@ def create_tables(conn, cursor) -> None:
             cursor.execute(ddl)
             print(f"🧱 Table `{name}` created or already exists.")
         conn.commit()
+        cursor.execute("""CREATE VIEW daily_sales AS SELECT DATE(order_date) AS sale_date, SUM(total_price) AS total_sales FROM orders GROUP BY DATE(order_date);""")
     except mysql.connector.Error as err:
         print(f"❌ Table creation failed: {err}")
         exit(1)

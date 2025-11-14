@@ -57,3 +57,16 @@ class DB: # A DB class for easier db connection management
         self.cursor.execute(f"UPDATE items SET {field} = %s WHERE item_id = %s", (value, item_id))
         self.conn.commit()
 
+    def create_order(self, total_price: float):
+        self.cursor.execute("INSERT INTO orders (total_price) VALUES (%s)", (total_price,))
+        self.conn.commit()
+        return self.cursor.lastrowid
+    
+    def add_order_items(self, order_items: dict):
+        for items in order_items.values():
+            self.cursor.execute("INSERT INTO order_items (order_id, item_id, quantity, price) VALUES (%s, %s, %s, %s)", (items[0], items[1], items[4], items[3]))
+            self.conn.commit()
+
+    def get_daily_sales(self):
+        self.cursor.execute("SELECT * FROM daily_sales")
+        return self.cursor.fetchall()
