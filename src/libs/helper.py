@@ -21,7 +21,7 @@ def clear_screen():
 
 def exit_program():
     clear_screen()
-    print("Goodbye!")
+    console.print("Goodbye!", style="bold green")
     sleep(1)
     exit()
 

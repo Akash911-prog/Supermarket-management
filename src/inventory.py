@@ -25,7 +25,7 @@ def view_inventory():
 
     console.print(table)
     db.close()
-    inquirer.confirm(message="Exit to main menu").execute()
+    input("Press enter to continue...")
 
 
 def manage_inventory_menu():

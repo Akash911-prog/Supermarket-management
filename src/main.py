@@ -55,8 +55,6 @@ def main():
         clear_screen()
         # Map the choice to the corresponding function
         map_choices(choice)
-        # Print the selected choice
-        console.print(f"You selected: {choice}", style="bold green on black")
 
         sleep(0.1)
 
