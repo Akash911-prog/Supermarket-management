@@ -1,12 +1,6 @@
 from db import DB
 from InquirerPy import inquirer
-from rich.table import Table
 from rich.console import Console
-from rich.traceback import install
-from rich.columns import Columns
-
-install()
-
 from libs.fuzzy_search import fuzzy_search
 from libs.helper import clear_screen, show_menu_heading, create_bill_table
 from config import MENU_STYLES, BILL_CHOICES, ITEM_FIELD_INDEX
@@ -16,7 +10,6 @@ items_cache : dict[str, list] = {}
 
 def show_billing_menu():
     show_menu_heading("Billing")
-
     answer = inquirer.select(
         # Center the main menu text
         message="use arrow keys to navigate and enter to select",
@@ -136,7 +129,9 @@ def edit_bill():
 
         if choice == "change_quantity":
             # Ask the user to enter the new quantity
-            quantity = inquirer.number(message="Enter the quantity: ", filter=lambda x: int(x), validate=lambda x: int(x) > 0, default=int(items_cache[item][4])).execute()
+            quantity = inquirer.number(message="Enter the quantity: ", filter=lambda x: int(x),
+                                       validate=lambda x: int(x) > 0,
+                                       default=int(items_cache[item][4])).execute()
             # Update the quantity of the item in the items_cache dictionary
             items_cache[item][4] = quantity
             # Show the updated bill
@@ -169,8 +164,16 @@ def add_item_to_bill():
     """
     while True:
         item = fuzzy_search('Choose the item you want to add: ')
-        quantity = inquirer.number(message="Enter the quantity: ", filter=lambda x: int(x), validate=lambda x: int(x) > 0).execute()
-        items_cache[item[1]] = [0, item[ITEM_FIELD_INDEX["item_id"]], item[ITEM_FIELD_INDEX["name"]], item[ITEM_FIELD_INDEX["price"]], quantity]
+        quantity = inquirer.number(message="Enter the quantity: ",
+                                   filter=lambda x: int(x), 
+                                   validate=lambda x: int(x) > 0).execute()
+        items_cache[item[1]] = [
+            0,
+            item[ITEM_FIELD_INDEX["item_id"]],
+            item[ITEM_FIELD_INDEX["name"]],
+            item[ITEM_FIELD_INDEX["price"]],
+            quantity
+            ]
 
         show_current_bill()
 

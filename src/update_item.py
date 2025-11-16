@@ -7,9 +7,7 @@ from libs.helper import clear_screen, show_menu_heading
 
 
 def get_updation_fields():
-
     fields_to_update = {}
-
     while True:
         field = inquirer.select(
             message="Select a field to update:",
@@ -20,7 +18,6 @@ def get_updation_fields():
                 "stock",
             ],
         ).execute()
-
 
         if field == "price":
             value = inquirer.number(

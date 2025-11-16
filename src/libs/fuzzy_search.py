@@ -14,3 +14,7 @@ def fuzzy_search(text="Search for an item: ") -> tuple[int, str, str, float, int
     item = items[item_name]
     db.close()
     return item
+
+
+
+

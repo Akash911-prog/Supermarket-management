@@ -1,5 +1,4 @@
 import mysql.connector
-
 from config import DB_NAME, DB_PASSWORD
 
 class DB: # A DB class for easier db connection management
@@ -64,9 +63,14 @@ class DB: # A DB class for easier db connection management
     
     def add_order_items(self, order_items: dict):
         for items in order_items.values():
-            self.cursor.execute("INSERT INTO order_items (order_id, item_id, quantity, price) VALUES (%s, %s, %s, %s)", (items[0], items[1], items[4], items[3]))
+            self.cursor.execute("INSERT INTO order_items (order_id, item_id, quantity, price) VALUES (%s, %s, %s, %s)",
+                                (items[0], items[1], items[4], items[3]))
             self.conn.commit()
 
     def get_daily_sales(self):
         self.cursor.execute("SELECT * FROM daily_sales")
         return self.cursor.fetchall()
+    
+
+
+    

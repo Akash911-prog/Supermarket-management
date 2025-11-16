@@ -22,14 +22,10 @@ def add_item_to_db(items_to_add):
     db.close()
 
 def add_item_menu():
-
     clear_screen()
-
     show_menu_heading("Add Items")
-
     name = inquirer.text(
         message="Enter the name of the item: ").execute()
-
     if name == '':
         return
 
@@ -55,8 +51,10 @@ def add_item_menu():
 
 
 def print_to_add_items():
-
-    table = Table(show_lines=True, title="Items added", title_style="bold cyan on black", border_style="#3C6382", style="#EAF0F1")
+    table = Table(show_lines=True, title="Items added",
+                  title_style="bold cyan on black",
+                  border_style="#3C6382",
+                  style="#EAF0F1")
     table.add_column("Name", justify="left", style="bold ")
     table.add_column("Description", justify="left", style="bold")
     table.add_column("Price", justify="left", style="bold")
@@ -81,6 +79,7 @@ def add_item_main():
             if len(items_to_add) > 0:
                 print_to_add_items()
                 add_item_to_db(items_to_add)
+                items_to_add.clear()
                 input("Press enter to continue...")
             break
 
