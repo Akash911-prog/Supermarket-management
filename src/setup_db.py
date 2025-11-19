@@ -57,7 +57,18 @@ def insert_dummy_data(conn, cursor) -> None:
         ("Colgate Toothpaste", "100g freshness gel", 55.00, 60),
         ("Dairy Milk", "Chocolate bar 40g", 45.00, 80),
         ("Amul Milk", "1L Tetra Pack", 68.00, 40),
-        ("Parle G", "Biscuits pack 100g", 10.00, 200)
+        ("Parle G", "Biscuits pack 100g", 10.00, 200),
+        ("Lays Chips", "Potato chips 50g pack", 20.00, 150),
+        ("Nescafe Coffee", "Instant coffee 50g jar", 145.00, 35),
+        ("Good Day Biscuits", "Cashew cookies 60g pack", 25.00, 110),
+        ("Tata Salt", "Iodized salt 1kg pack", 22.00, 90),
+        ("Red Label Tea", "Tea powder 250g pack", 95.00, 50),
+        ("Fortune Oil", "Sunflower oil 1L bottle", 135.00, 45),
+        ("Bournvita", "Health drink 75g pouch", 30.00, 70),
+        ("Sprite", "Soft drink 750ml bottle", 40.00, 55),
+        ("Dettol Soap", "Bathing soap 75g bar", 35.00, 85),
+        ("Kellogg's Cornflakes", "Original 250g box", 115.00, 30)
+
     ]
 
     cursor.executemany(
@@ -69,37 +80,90 @@ def insert_dummy_data(conn, cursor) -> None:
 
     print(f"🍪 Inserted {cursor.rowcount} dummy products into `items`.")
 
-def insert_dummy_orders(conn, cursor) -> None:
-    """Insert dummy orders and their order items."""
+from datetime import datetime, timedelta
+import random
+
+def insert_dummy_orders(conn, cursor):
+    """Insert dummy orders for multiple dates with order items."""
     try:
-        # Create 2 dummy orders
-        orders = [
-            (120.00,),  # total price
-            (75.00,)
-        ]
-        cursor.executemany("INSERT INTO orders (total_price) VALUES (%s);", orders)
+        # ----------------------------
+        # CONFIG
+        # ----------------------------
+        dates = [
+            "2025-11-01",
+            "2025-10-02",
+            "2025-09-03",
+            "2025-08-04",
+            "2025-07-05"
+        ]  # 5 dates → 5 * 5 = 25 orders
+
+        orders_per_date = 5
+        min_items_per_order = 1
+        max_items_per_order = 4
+
+        # ----------------------------
+        # 1. Get item list for item_id + price
+        # ----------------------------
+        cursor.execute("SELECT item_id, price FROM items;")
+        items = cursor.fetchall()  # (item_id, price)
+
+        if not items:
+            print("❌ No items found in `items` table.")
+            return
+
+        # ----------------------------
+        # 2. Insert orders by date
+        # ----------------------------
+        all_order_ids = []
+
+        for date in dates:
+            order_records = [(random.uniform(50, 600), date) for _ in range(orders_per_date)]
+
+            cursor.executemany(
+                """
+                INSERT INTO orders (total_price, order_date)
+                VALUES (%s, %s);
+                """,
+                order_records
+            )
+            conn.commit()
+
+            # Get back order_ids for this date only
+            cursor.execute(
+                "SELECT order_id FROM orders WHERE DATE(order_date) = %s ORDER BY order_id DESC LIMIT %s;",
+                (date, orders_per_date)
+            )
+            fetched = [row[0] for row in cursor.fetchall()]
+            all_order_ids.extend(fetched)
+
+        # ----------------------------
+        # 3. Insert order items
+        # ----------------------------
+        order_items_data = []
+
+        for order_id in all_order_ids:
+            num_items = random.randint(min_items_per_order, max_items_per_order)
+
+            for _ in range(num_items):
+                item_id, item_price = random.choice(items)
+                quantity = random.randint(1, 5)
+
+                order_items_data.append((order_id, item_id, quantity, item_price))
+
+        cursor.executemany(
+            """
+            INSERT INTO order_items (order_id, item_id, quantity, price)
+            VALUES (%s, %s, %s, %s);
+            """,
+            order_items_data
+        )
         conn.commit()
 
-        # Get generated order IDs
-        cursor.execute("SELECT order_id FROM orders;")
-        order_ids = [row[0] for row in cursor.fetchall()]
+        print(f"✅ Inserted {len(all_order_ids)} orders and {len(order_items_data)} order items successfully!")
 
-        # Example order items (order_id, item_id, quantity)
-        order_items = [
-            (order_ids[0], 1, 2, 30),  # 2 apples
-            (order_ids[0], 2, 1, 20),  # 1 milk
-            (order_ids[1], 3, 3, 90),  # 3 bread
-        ]
-        cursor.executemany("""
-            INSERT INTO order_items (order_id, item_id, quantity)
-            VALUES (%s, %s, %s);
-        """, order_items)
-
-        conn.commit()
-        print("✅ Dummy orders and order items inserted!")
-
-    except exceptions as e:
+    except Exception as e:
         print("❌ Error inserting dummy orders:", e)
+
 
 # ------------------------------------------
 # Main Setup Function

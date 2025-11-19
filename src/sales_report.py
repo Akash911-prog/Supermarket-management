@@ -6,9 +6,9 @@ def sales_report_main():
     sales = db.get_daily_sales()
     db.close()
     
-    dates = [row[0] for row in sales]
+    dates = [row[0].strftime("%d-%m-%Y") for row in sales]
     totals = [float(row[1]) for row in sales]
-
+    
     plt.figure()
     plt.plot(dates, totals)   # No colors specified (safe default)
     plt.xlabel("Date")
