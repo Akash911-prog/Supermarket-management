@@ -65,6 +65,7 @@ class DB: # A DB class for easier db connection management
         for items in order_items.values():
             self.cursor.execute("INSERT INTO order_items (order_id, item_id, quantity, price) VALUES (%s, %s, %s, %s)",
                                 (items[0], items[1], items[4], items[3]))
+            self.cursor.execute("UPDATE items SET stock = stock - %s WHERE item_id = %s", (items[4], items[1]))
             self.conn.commit()
 
     def get_daily_sales(self):
